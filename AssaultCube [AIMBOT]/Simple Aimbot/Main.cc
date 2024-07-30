@@ -10,6 +10,7 @@ HANDLE GetProcessHandle(const TCHAR *name) {
     if (Process32First(snapshot, &entry)) {
         do {
             if (_tcscmp(entry.szExeFile, name) == 0) {
+				delete snapshot;
                 return OpenProcess(PROCESS_ALL_ACCESS, FALSE, entry.th32ProcessID);
             }
         } while (Process32Next(snapshot, &entry));
@@ -85,20 +86,20 @@ Vec2 CalcAimbot(Player& Local, Player& Enemy) {
     Vec3 ToCalc = (Local.HeadPosition - Enemy.HeadPosition); // merci la cock i love da math
     Vec2 NewAngles{}; // merci la cock i love da Result
 
-    auto hyp_angle = -atan2f(ToCalc.x, ToCalc.y);
+    auto hyp_angle = -atan2f(ToCalc.x, ToCalc.y); // if its postive
     NewAngles.x = RadToAng(hyp_angle);
 
-    auto hypP_angle = atan2f(ToCalc.y, ToCalc.z);
-    NewAngles.y = RadToAng(hypP_angle);
-
+	auto hypP_angle = atan2f(ToCalc.y, ToCalc.z);
+	NewAngles.y = RadToAng(hypP_angle);
     return NewAngles;
 }
 
 int main() {
     HANDLE handle = GetProcessHandle("ac_client.exe");
 
-    if (handle == nullptr)
-        return 0;
+	if (handle == nullptr || handle == INVALID_HANDLE_VALUE) {
+		return 0;
+	}
 
     while (true) {
 		Player Local;
@@ -111,7 +112,7 @@ int main() {
 
 		ReadProcessMemory(handle, reinterpret_cast<Player*>(DynamicPlayerAddy), &Local, sizeof(Local), 0); // Read It As A Struct!
 
-		for (int PlayerIndex = 0; PlayerIndex <= 12; PlayerIndex++) {
+		for (int PlayerIndex = 0; PlayerIndex <= 1; PlayerIndex++) {
 			Player Enemy;
 
 			uintptr_t DynamicPlayer2Addy;
@@ -122,12 +123,12 @@ int main() {
 
 			Vec2 Positions = CalcAimbot(Local, Enemy);
 			Vec3 ToCalc = (Local.HeadPosition - Enemy.HeadPosition);
-			float distance = sqrt(ToCalc.x * ToCalc.x + ToCalc.y * ToCalc.y);
-                        if (distance <= 10)  {
-	                     WriteProcessMemory(handle, reinterpret_cast<void*>(DynamicPlayerAddy + 0x0040), &Positions.x, sizeof(Positions.x), 0); // Closest Cheat
-                        }
+			float distance = sqrt(ToCalc.x*ToCalc.x + ToCalc.y*ToCalc.y);
+			if (distance <= 10) {
+				WriteProcessMemory(handle, reinterpret_cast<void*>(DynamicPlayerAddy + 0x0040), &Positions.x, sizeof(Positions.x), 0); // Closest Cheat
+				WriteProcessMemory(handle, reinterpret_cast<void*>(DynamicPlayerAddy + 0x0044), &Positions.y, sizeof(Positions.y), 0); // Closest Cheat
+			}
 		}
     }
-
     return 0;
 }
