@@ -10,7 +10,6 @@ HANDLE GetProcessHandle(const TCHAR *name) {
     if (Process32First(snapshot, &entry)) {
         do {
             if (_tcscmp(entry.szExeFile, name) == 0) {
-				delete snapshot;
                 return OpenProcess(PROCESS_ALL_ACCESS, FALSE, entry.th32ProcessID);
             }
         } while (Process32Next(snapshot, &entry));
