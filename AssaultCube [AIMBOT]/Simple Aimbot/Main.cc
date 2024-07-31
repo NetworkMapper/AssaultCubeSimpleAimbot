@@ -1,5 +1,4 @@
 #include "Includes.hpp"
-#include "Aimbot.hpp"
 
 int main() {
 	auto handle = Mem::GetProcessHandle("ac_client.exe");
