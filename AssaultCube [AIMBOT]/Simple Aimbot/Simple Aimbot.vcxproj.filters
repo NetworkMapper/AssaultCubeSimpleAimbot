@@ -21,5 +21,11 @@
     <ClInclude Include="Includes.hpp">
       <Filter>src\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Math.hpp">
+      <Filter>src\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory.hpp">
+      <Filter>src\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
