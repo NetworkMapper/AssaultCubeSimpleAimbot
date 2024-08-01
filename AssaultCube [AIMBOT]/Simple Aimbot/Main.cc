@@ -17,7 +17,7 @@ int main() {
 
 		ReadProcessMemory(handle, reinterpret_cast<void*>(0x50F4F8), &DynamicEntityList, sizeof(DynamicEntityList), 0); // Read Dynamic Address
 
-		ReadProcessMemory(handle, reinterpret_cast<Player*>(DynamicPlayerAddy), &Local, sizeof(Local), 0); // Read It As A Struct!
+		ReadProcessMemory(handle, reinterpret_cast<void*>(DynamicPlayerAddy), &Local, sizeof(Local), 0); // Read It As A Struct!
 
 		if (GetAsyncKeyState(VK_INSERT)) {
 			for (int PlayerIndex = 0; PlayerIndex <= 1; PlayerIndex++) {
@@ -27,7 +27,7 @@ int main() {
 
 				ReadProcessMemory(handle, reinterpret_cast<void*>(DynamicEntityList + (0x4 * PlayerIndex)), &DynamicPlayer2Addy, sizeof(DynamicPlayer2Addy), 0); // Read Dynamic Address
 
-				ReadProcessMemory(handle, reinterpret_cast<Player*>(DynamicPlayer2Addy), &Enemy, sizeof(Enemy), 0); // Read It As A Struct!
+				ReadProcessMemory(handle, reinterpret_cast<void*>(DynamicPlayer2Addy), &Enemy, sizeof(Enemy), 0); // Read It As A Struct!
 
 				Vec2 Positions = Features::CalcAimbot(Local, Enemy);
 				Vec3 ToCalc = (Local.HeadPosition - Enemy.HeadPosition);
