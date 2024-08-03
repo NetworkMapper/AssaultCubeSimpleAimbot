@@ -3,7 +3,6 @@
 #include <tchar.h>
 #include <optional>
 
-
 namespace Mem {
 	HANDLE GetProcessHandle(const CHAR* name) {
 
