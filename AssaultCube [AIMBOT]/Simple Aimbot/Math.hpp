@@ -3,10 +3,10 @@
 
 namespace Math {
     inline float RadToAng(float Rad) {
-        return (Rad * (180.0 / M_PI)); // merci la cock i love da math
+        return (float)(Rad * (180.0 / M_PI));
     }
 
     inline float AngToRad(float Rad) {
-        return (Rad / (180.0 * M_PI)); // merci la cock i love da math
+        return (float)(Rad / (180.0 * M_PI));
     }
 }
