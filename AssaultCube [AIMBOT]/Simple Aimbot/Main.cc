@@ -1,9 +1,10 @@
 #include "Includes.hpp"
+#include "Aimbot.hpp"
 
 int main() {
 	auto handle = Mem::GetProcessHandle("ac_client.exe");
 
-	if (handle == nullptr || handle == INVALID_HANDLE_VALUE) {
+	if (handle == nullptr) {
 		MessageBoxA(nullptr, "Error Getting Handle", "Generic Error", 0);
 		return 0;
 	}
@@ -20,7 +21,7 @@ int main() {
 		ReadProcessMemory(handle, reinterpret_cast<void*>(DynamicPlayerAddy), &Local, sizeof(Local), 0); // Read It As A Struct!
 
 		if (GetAsyncKeyState(VK_INSERT)) {
-			for (int PlayerIndex = 0; PlayerIndex <= 1; PlayerIndex++) {
+			for (int PlayerIndex = 0; PlayerIndex <= 12; PlayerIndex++) {
 				Player Enemy;
 
 				uintptr_t DynamicPlayer2Addy;
@@ -32,6 +33,7 @@ int main() {
 				Vec2 Positions = Features::CalcAimbot(Local, Enemy);
 				Vec3 ToCalc = (Local.HeadPosition - Enemy.HeadPosition);
 				auto distance = sqrt(ToCalc.x * ToCalc.x + ToCalc.y * ToCalc.y);
+
 				if (distance <= 50) {
 					WriteProcessMemory(handle, reinterpret_cast<void*>(DynamicPlayerAddy + 0x0040), &Positions.x, sizeof(Positions.x), 0); // Closest Cheat
 					WriteProcessMemory(handle, reinterpret_cast<void*>(DynamicPlayerAddy + 0x0044), &Positions.y, sizeof(Positions.y), 0); // Closest Cheat
