@@ -75,9 +75,4 @@ namespace Features {
 
 		return NewAngles;
 	}
-	int ClosestPlayer(Player& Local, Player Enemy) {
-		if(Local.ViewAngle.x > 90)
-
-		return NULL;
-	}
 }
